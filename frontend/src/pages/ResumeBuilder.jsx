@@ -81,22 +81,24 @@ const ResumeBuilder = () => {
   //-------------------------------------------------------------------------------------------
   //* Function to change 'public'--> Changes to opposite of current states
   const changeResumeVisibility = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("resumeId", resumeId);
-      formData.append(
-        "resumeData",
-        JSON.stringify({ public: !resumeData.public }) // & FormData is like an envelope to send data ; it accepts only strings
-      );
-      const { data } = await api.put(`api/resumes/update`, formData, {
+  try {
+    const { data } = await api.put(
+      "api/resumes/update",
+      {
+        resumeId,
+        resumeData: { public: !resumeData.public },
+      },
+      {
         headers: { Authorization: token },
-      });
-      setResumeData({ ...resumeData, public: !resumeData.public });
-      toast.success(data.message);
-    } catch (error) {
-      console.error("Error saving resume:", error);
-    }
-  };
+      }
+    );
+
+    setResumeData((prev) => ({ ...prev, public: !prev.public }));
+    toast.success(data.message);
+  } catch (error) {
+    console.error("Error saving resume:", error);
+  }
+};
 
   //-------------------------------------------------------------------------------------------
   // * Function to share resume when public is true
@@ -123,32 +125,25 @@ const ResumeBuilder = () => {
   //-------------------------------------------------------------------------------------------
   // * Function to SAVE resume changes
   const saveResume = async () => {
-    try {
-      let updatedResumeData = structuredClone(resumeData); // & structuredClone goes through your entire object, no matter how nested it is ; creates a brand-new version of every single part.
-
-      // * Remove image from updatedResumeData to send resume data and image separately to formData
-      if (typeof resumeData.personal_info.image === "object") {
-        delete updatedResumeData.personal_info.image;
-      }
-
-      const formData = new FormData();
-      formData.append("resumeId", resumeId);
-      formData.append("resumeData", JSON.stringify(updatedResumeData));
-      formData.append("removeBackground", removeBackground ? "true" : "false"); // & IF removeBackground is true , append "true"
-
-      typeof resumeData.personal_info.image === "object" &&
-        formData.append("image", resumeData.personal_info.image);
-
-      const { data } = await api.put(`api/resumes/update`, formData, {
+  try {
+    const { data } = await api.put(
+      "api/resumes/update",
+      {
+        resumeId,
+        resumeData,
+        removeBackground,
+      },
+      {
         headers: { Authorization: token },
-      });
+      }
+    );
 
-      setResumeData(data.resume);
-      toast.success("Saved Successfully!");
-    } catch (error) {
-      console.error("Error saving resume:", error);
-    }
-  };
+    setResumeData(data.resume);
+    toast.success("Saved Successfully!");
+  } catch (error) {
+    console.error("Error saving resume:", error);
+  }
+};
 
   return (
     <div>
