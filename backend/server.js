@@ -9,8 +9,37 @@ import aiRouter from "./routes/aiRoutes.js";
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 const corsOptions = {
-  origin: ["http://localhost:5173", process.env.FRONTEND_URL].filter(Boolean),
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    // Check if origin is in our configured allowed origins
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    // Dynamic match for Vercel preview/production deployments of this project
+    try {
+      const hostname = new URL(origin).hostname;
+      if (
+        hostname.startsWith("ai-powered-resume-builder") &&
+        hostname.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+    } catch (e) {
+      // Invalid URL format
+    }
+
+    // Deny CORS for other origins
+    return callback(null, false);
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 };
