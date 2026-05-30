@@ -13,7 +13,7 @@ A high-performance, ***full-stack MERN application*** that transforms raw career
 | **Database** | MongoDB Atlas, Mongoose |
 | **AI/Media** | Google Gemini API |
 | **Auth** | JWT, Bcrypt.js, Cors |
-| **Hosting** | Vercel (Client), Render (Server) |
+| **Hosting** | Vercel (Client & Server) |
 
   ---
 ## ✴︎ Features
