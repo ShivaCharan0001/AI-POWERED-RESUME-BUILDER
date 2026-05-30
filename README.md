@@ -36,6 +36,5 @@ A high-performance, ***full-stack MERN application*** that transforms raw career
 * **Environment Management**: Securely handles sensitive API keys for Google Gemini.
   
 ### ° *Deployment*
-- ***Vercel***: Powers the frontend with high-performance edge hosting and seamless CI/CD integration.
-- ***Render***: Hosts the backend server, handling API requests, AI processing, and database connections.
-- ***Environment Management***: Utilizes secure environment variables to manage sensitive API keys for Google Gemini.
+- ***Vercel***: Powers the frontend with high-performance hosting.
+- ***Environment Management***: Utilizes secure environment variables on vercel to manage sensitive API keys for Google Gemini.
